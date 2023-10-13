@@ -2,6 +2,8 @@ package operator;
 import java.util.Stack;
 
 public class Calculator {
+	
+	public int a;
 
     private Stack<Double> pile;
 
