@@ -8,7 +8,7 @@ public class CalculatorModel implements CalculatorModelInterface{
 
     public CalculatorModel() {
         this.pile = new Stack<>();
-        accu="";
+        accu=new String("");
     }
 
     // Opérations de base

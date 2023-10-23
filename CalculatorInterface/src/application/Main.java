@@ -1,9 +1,13 @@
 package application;
+
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class Main //extends Application 
 {
@@ -20,9 +24,27 @@ public class Main //extends Application
 			e.printStackTrace();
 		}
 	}
+	*/
+	public static double evaluateExpression(String expression, double xValue) throws ScriptException {
+	    ScriptEngineManager manager = new ScriptEngineManager();
+	    ScriptEngine engine = manager.getEngineByName("JavaScript");
+	    
+	    engine.put("x", xValue);
+	    return (double) engine.eval(expression);
+	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		//launch(args);
+	
+		try {
+			System. out. println(  evaluateExpression("x",1));
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
-	*/
+	
+	
 }
