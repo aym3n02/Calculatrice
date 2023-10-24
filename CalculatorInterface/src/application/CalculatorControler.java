@@ -1,11 +1,13 @@
 package application;
 
+import java.awt.Toolkit;
 import java.util.List;
 
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 
 
@@ -54,37 +56,39 @@ public class CalculatorControler implements CalculatorControlerInterface {
         }
 	}
 	
-	void push(ListView<String> stackView,double value) {
+	void push(ListView<String> stackView,TextField inputField) {
+		String strvalue = inputField.getText();
         try {
+        	double value = Double.parseDouble(strvalue);
             calculator.push(value);
             stackView.getItems().add(0, String.valueOf(value));
-        } catch (NumberFormatException e) {
-            GUI.ErrorMessage("entrée invalide");
+            inputField.clear();
+        } catch (Exception e) {
+        	Toolkit.getDefaultToolkit().beep();
         }
 	}
 	
 	//////////////// Ajout des graphes
-	public void plotGraph(double a, double b) {
-        // Define the x and y axes
+
+    public void plotGraph(List<Double> xData, List<Double> yData) {
+        // Ensure data is valid:
+        if (xData.size() != yData.size()) {
+            GUI.showError("Mismatched x and y data sizes.");
+            return;
+        }
+        
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        for (int i = 0; i < xData.size(); i++) {
+            series.getData().add(new XYChart.Data<>(xData.get(i), yData.get(i)));
+        }
+        
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("X");
         yAxis.setLabel("Y");
-
-        // Create a line chart using the defined x and y axes
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-
-        // Create a data series for the function y = ax + b
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-        for (double x = -10; x <= 10; x += 0.1) { // This is an arbitrary range, adjust as needed.
-            series.getData().add(new XYChart.Data<>(x, a * x + b));
-        }
-
-        // Add the data series to the line chart
-        lineChart.getData().add(series);
         
-        // Display the graph using the GUI class
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.getData().add(series);
         GUI.displayGraph(lineChart);
     }
-
 }
