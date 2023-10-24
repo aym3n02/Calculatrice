@@ -3,6 +3,8 @@ package application;
 import java.awt.Toolkit;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -67,7 +69,21 @@ public class CalculatorControler implements CalculatorControlerInterface {
         	Toolkit.getDefaultToolkit().beep();
         }
 	}
-	
+	void remove(ListView<String> stackView) {
+		try {
+			calculator.drop();
+			// Assuming originalListView is your original ListView
+			ObservableList<String> originalItems = stackView.getItems();
+
+			// Create a new ObservableList from the original list minus its last item
+			ObservableList<String> newItems = FXCollections.observableArrayList(originalItems.subList(1, originalItems.size()));
+
+			// Create a new ListView with the new items
+			stackView.setItems(newItems);
+		}catch(RuntimeException e) {
+			GUI.ErrorMessage(e.getMessage());
+		}
+	}
 	//////////////// Ajout des graphes
 
     public void plotGraph(List<Double> xData, List<Double> yData) {

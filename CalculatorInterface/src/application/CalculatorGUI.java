@@ -1,11 +1,13 @@
 package application;
 
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -16,12 +18,17 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -66,10 +73,12 @@ public class CalculatorGUI extends Application {
         Button pushButton = new Button("Push");
         pushButton.setOnAction(event -> {
         
-            // Fire the action event of inputField2
+            // Fire the action event of inputField
             ActionEvent actionEvent = new ActionEvent(inputField, null);
             inputField.fireEvent(actionEvent);
         });
+        Button removeButton = new Button("Remove");
+        removeButton.setOnAction(event ->controler.remove(stackView));
         Button addButton = new Button("+");
         addButton.setOnAction(event -> controler.performOperation("add",stackView));
         Button subButton = new Button("-");
@@ -80,7 +89,7 @@ public class CalculatorGUI extends Application {
         divButton.setOnAction(event -> controler.performOperation("div",stackView));
 
         // Add buttons
-        buttons.getChildren().addAll(pushButton, addButton, subButton, mulButton, divButton);
+        buttons.getChildren().addAll(pushButton,removeButton, addButton, subButton, mulButton, divButton);
         root.setCenter(stackView);
         root.setBottom(buttons);
         topLayout.getChildren().addAll(menuBar, inputField);
